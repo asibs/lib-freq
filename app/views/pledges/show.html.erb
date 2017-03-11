@@ -1,0 +1,42 @@
+<% if !@campaign || !@user || (@unconfirmed_pledges.empty? && @confirmed_pledges.empty?) %>
+  <h1>Oops, something went wrong...</h1>
+<% else %>
+  <h1><%= "Pledges for #{@campaign.name}" %></h1>
+
+  <% curr_time = Time.now %>
+
+  <% if @campaign.finished?(curr_time) %>
+    <h2>This campaign has ended.</h2>
+  <% else %>
+
+    <% if !@unconfirmed_pledges.empty? %>
+
+      <h2>Confirm the following pledges?</h2>
+      <%= form_tag("/campaigns/#{@campaign.id.to_s}/pledges/#{@user.uuid}", method: :put) do %>
+        <table>
+        <% @unconfirmed_pledges.each do |p| %>
+          <tr><td><%= p.song.artist %></td><td><%= p.song.title %></td></tr>
+        <% end %>
+        </table>
+
+        <%= submit_tag("Confirm all Pledges") %>
+      <% end %>
+
+    <% end %>
+
+    <% if !@confirmed_pledges.empty? %>
+
+      <h2>You have already pledged for the following songs:</h2>
+      <table>
+      <% @confirmed_pledges.each do |p| %>
+        <tr><td><%= p.song.artist %></td><td><%= p.song.title %></td></tr>
+      <% end %>
+      </table>
+
+    <% end %>
+
+  <% end %>
+
+<% end %>
+
+<p>Return to the <%= link_to @campaign.name, @campaign %> page</p>

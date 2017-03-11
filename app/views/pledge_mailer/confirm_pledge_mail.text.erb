@@ -1,0 +1,10 @@
+*** <%= @campaign.name %> - Confirm your Song Pledges ***
+
+Follow this url below to confirm your pledged songs:
+<%= @confirmation_url %>
+
+<% @songs.each do |song| %>
+<%= song.artist %> - <%= song.title %>
+<% end %>
+
+If you did not sign up to receive this email, please ignore it.

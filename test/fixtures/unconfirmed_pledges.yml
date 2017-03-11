@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pledge_uuid: MyString
+  user: one
+  song: one
+
+two:
+  pledge_uuid: MyString
+  user: two
+  song: two

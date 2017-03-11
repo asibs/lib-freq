@@ -1,0 +1,30 @@
+<% if !@campaign || (@new_pledges.empty? && @existing_pledges.empty?) %>
+  <h1>Oops, something went wrong...</h1>
+<% else %>
+  <h1><%= "Pledges for #{@campaign.name} confirmed!" %></h1>
+
+  <% if !@new_pledges.empty? %>
+
+    <h2>You have successfully pledged for the following songs:</h2>
+    <table>
+    <% @new_pledges.each do |p| %>
+      <tr><td><%= p.song.artist %></td><td><%= p.song.title %></td></tr>
+    <% end %>
+    </table>
+
+  <% end %>
+
+  <% if !@existing_pledges.empty? %>
+
+    <h2>You had already pledged for the following songs:</h2>
+    <table>
+    <% @existing_pledges.each do |p| %>
+      <tr><td><%= p.song.artist %></td><td><%= p.song.title %></td></tr>
+    <% end %>
+    </table>
+
+  <% end %>
+
+<% end %>
+
+<p>Return to the <%= link_to @campaign.name, @campaign %> page</p>

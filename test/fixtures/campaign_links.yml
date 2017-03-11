@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  campaign: one
+  link_type: MyString
+  url: MyString
+  show_during_pledge: false
+  show_during_buy: false
+
+two:
+  campaign: two
+  link_type: MyString
+  url: MyString
+  show_during_pledge: false
+  show_during_buy: false

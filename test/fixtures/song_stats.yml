@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  song: one
+  pledge_count: 1
+  buy_count: 1
+
+two:
+  song: two
+  pledge_count: 1
+  buy_count: 1

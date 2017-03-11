@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1><%= @campaign.name %> - Confirm your Song Pledges</h1>
+
+    <p>Follow this link to confirm your pledged songs:<br />
+    <%= @confirmation_url %></p>
+
+    <table>
+    <% @songs.each do |song| %>
+      <tr>
+        <td><%= song.artist %></td>
+        <td><%= song.title %></td>
+      </tr>
+    <% end %>
+    </table>
+
+    <p>If you did not sign up to receive this email, please ignore it.</p>
+  </body>
+</html>
