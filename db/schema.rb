@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20170218182752) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "campaign_links", force: :cascade do |t|
     t.integer  "campaign_id"
     t.string   "link_type"
@@ -20,7 +23,7 @@ ActiveRecord::Schema.define(version: 20170218182752) do
     t.boolean  "show_during_buy"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
-    t.index ["campaign_id"], name: "index_campaign_links_on_campaign_id"
+    t.index ["campaign_id"], name: "index_campaign_links_on_campaign_id", using: :btree
   end
 
   create_table "campaigns", force: :cascade do |t|
@@ -31,7 +34,7 @@ ActiveRecord::Schema.define(version: 20170218182752) do
     t.datetime "buy_end"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["name"], name: "index_campaigns_on_name", unique: true
+    t.index ["name"], name: "index_campaigns_on_name", unique: true, using: :btree
   end
 
   create_table "song_buys", force: :cascade do |t|
@@ -39,9 +42,9 @@ ActiveRecord::Schema.define(version: 20170218182752) do
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["song_id"], name: "index_song_buys_on_song_id"
-    t.index ["user_id", "song_id"], name: "index_song_buys_on_user_id_and_song_id", unique: true
-    t.index ["user_id"], name: "index_song_buys_on_user_id"
+    t.index ["song_id"], name: "index_song_buys_on_song_id", using: :btree
+    t.index ["user_id", "song_id"], name: "index_song_buys_on_user_id_and_song_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_song_buys_on_user_id", using: :btree
   end
 
   create_table "song_links", force: :cascade do |t|
@@ -52,7 +55,7 @@ ActiveRecord::Schema.define(version: 20170218182752) do
     t.boolean  "show_during_buy"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
-    t.index ["song_id"], name: "index_song_links_on_song_id"
+    t.index ["song_id"], name: "index_song_links_on_song_id", using: :btree
   end
 
   create_table "song_pledges", force: :cascade do |t|
@@ -61,9 +64,9 @@ ActiveRecord::Schema.define(version: 20170218182752) do
     t.boolean  "confirmed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["song_id"], name: "index_song_pledges_on_song_id"
-    t.index ["user_id", "song_id"], name: "index_song_pledges_on_user_id_and_song_id", unique: true
-    t.index ["user_id"], name: "index_song_pledges_on_user_id"
+    t.index ["song_id"], name: "index_song_pledges_on_song_id", using: :btree
+    t.index ["user_id", "song_id"], name: "index_song_pledges_on_user_id_and_song_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_song_pledges_on_user_id", using: :btree
   end
 
   create_table "song_stats", force: :cascade do |t|
@@ -72,7 +75,7 @@ ActiveRecord::Schema.define(version: 20170218182752) do
     t.integer  "buy_count"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["song_id"], name: "index_song_stats_on_song_id", unique: true
+    t.index ["song_id"], name: "index_song_stats_on_song_id", unique: true, using: :btree
   end
 
   create_table "songs", force: :cascade do |t|
@@ -81,17 +84,25 @@ ActiveRecord::Schema.define(version: 20170218182752) do
     t.string   "title"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["campaign_id"], name: "index_songs_on_campaign_id"
+    t.index ["campaign_id"], name: "index_songs_on_campaign_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
     t.string   "uuid"
     t.string   "hashed_email"
-    t.text     "crypted_email", limit: 1024
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.index ["hashed_email"], name: "index_users_on_hashed_email", unique: true
-    t.index ["uuid"], name: "index_users_on_uuid", unique: true
+    t.text     "crypted_email"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["hashed_email"], name: "index_users_on_hashed_email", unique: true, using: :btree
+    t.index ["uuid"], name: "index_users_on_uuid", unique: true, using: :btree
   end
 
+  add_foreign_key "campaign_links", "campaigns"
+  add_foreign_key "song_buys", "songs"
+  add_foreign_key "song_buys", "users"
+  add_foreign_key "song_links", "songs"
+  add_foreign_key "song_pledges", "songs"
+  add_foreign_key "song_pledges", "users"
+  add_foreign_key "song_stats", "songs"
+  add_foreign_key "songs", "campaigns"
 end
