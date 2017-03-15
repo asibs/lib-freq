@@ -5,21 +5,30 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
   pool: 5
   timeout: 5000
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  host: localhost
+  database: libfreqdb_dev
+  username: libfreq_dev
+  password: dev_password
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: db/test.sqlite3
+  host: localhost
+  database: libfreqdb_tst
+  username: libfreq_tst
+  password: tst_password
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: <%= ENV['RAILS_APP_DB'] %>
+  username: <%= ENV['RAILS_APP_DB_USER'] %>
+  password: <%= ENV['RAILS_APP_DB_PASS'] %>
