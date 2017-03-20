@@ -1,0 +1,40 @@
+<%# Required params are campaign and song_list %>
+
+<%# Set defaults on optional params %>
+<% render_form = local_assigns.fetch :render_form, false %>
+<% render_pledge_phase_links = local_assigns.fetch :render_pledge_phase_links, true %>
+<% render_buy_phase_links = local_assigns.fetch :render_buy_phase_links, true %>
+<% render_stats = local_assigns.fetch :render_stats, true %>
+
+<% song_list.sort! { |a,b| b.song_stat.pledge_count <=> a.song_stat.pledge_count } %>
+
+<table>
+  <tr>
+    <% if render_form %><th>Pledge?</th><% end %>
+    <th>Artist</th>
+    <th>Song</th>
+    <% if render_pledge_phase_links %><th colspan="2">Listen</th><% end %>
+    <% if render_buy_phase_links %><th colspan="2">Buy</th><% end %>
+    <% if render_stats %><th>Pledge Count</th><% end %>
+  </tr>
+
+  <% song_list.each do |song| %>
+  <tr>
+    <% if render_form %><td><%= check_box_tag "song_ids[]", song.id %></td><% end %>
+    <td><%= song.artist %></td>
+    <td><%= song.title %></td>
+    <% if render_pledge_phase_links %>
+      <td><%= render partial: "shared/song_link", object: song.find_link("spotify") %></td>
+      <td><%= render partial: "shared/song_link", object: song.find_link("youtube") %></td>
+    <% end %>
+    <% if render_buy_phase_links %>
+      <td><%= render partial: "shared/song_link", object: song.find_link("itunes") %></td>
+      <td><%= render partial: "shared/song_link", object: song.find_link("amazon") %></td>
+    <% end %>
+    <% if render_stats %>
+      <td><%= song.song_stat.pledge_count %></td>
+    <% end %>
+  <% end %><%# End foreach %>
+
+  </tr>
+</table>

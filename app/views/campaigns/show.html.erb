@@ -5,30 +5,11 @@
 <% if @campaign.finished?(curr_time) %>
   <h2>This campaign has ended.</h2>
 <% end %>
-  
+
 <% songs = @campaign.song.to_a.clone %>
-<% songs.sort! { |a,b| b.song_stat.pledge_count <=> a.song_stat.pledge_count } %>
 
-<%= form_tag("/campaigns/#{@campaign.id.to_s}/pledges") do %>
-
-  <table>
-  <% songs.each do |song| %>
-    <tr>
-      <td><%= check_box_tag "song_ids[]", song.id %></td>
-      <td><%= song.artist %></td>
-      <td><%= song.title %></td>
-      <td><%= song.song_stat.pledge_count %></td>
-
-      <% if @campaign.buy_phase?(curr_time) %>
-        <td><%= song.song_stat.buy_count %></td>
-      <% end %>
-    </tr>
-  <% end %>
-  </table>
-
-  <%= label_tag(:email, "Email Address:") %>
-  <%= text_field_tag(:email) %>
-
-  <%= submit_tag("Pledge") %>
-
-<% end %>
+<%= render partial: "shared/song_list_with_form", object: songs, locals: {
+  campaign: @campaign, render_form: @campaign.pledge_phase?(curr_time),
+  render_pledge_phase_links: @campaign.pledge_phase?(curr_time),
+  render_buy_phase_links: @campaign.buy_phase?(curr_time), render_stats: true
+} %>

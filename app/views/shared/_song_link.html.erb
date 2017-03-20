@@ -1,0 +1,13 @@
+<% puts song_link %>
+<% if song_link %>
+<% puts "Rendering song_link" %>
+
+  <a href="<%= song_link.url %>" target="_blank">
+    <% if song_link.image_exists? %>
+      <%= image_tag(song_link.image_path, :alt => song_link.link_type) %>
+    <% else %>
+      <%= song_link.link_type %>
+    <% end %>
+  </a>
+
+<% end %>

@@ -1,27 +1,23 @@
-<% if !@campaign || (@new_pledges.empty? && @existing_pledges.empty?) %>
+<% if !@campaign || (@new_songs.empty? && @existing_songs.empty?) %>
   <h1>Oops, something went wrong...</h1>
 <% else %>
   <h1><%= "Pledges for #{@campaign.name} confirmed!" %></h1>
 
-  <% if !@new_pledges.empty? %>
+  <% if !@new_songs.empty? %>
 
     <h2>You have successfully pledged for the following songs:</h2>
-    <table>
-    <% @new_pledges.each do |p| %>
-      <tr><td><%= p.song.artist %></td><td><%= p.song.title %></td></tr>
-    <% end %>
-    </table>
+    <%= render partial: "shared/song_list", object: @new_songs, locals: {
+      campaign: @campaign, render_form: false, render_pledge_phase_links: false, render_buy_phase_links: false, render_stats: false
+    } %>
 
   <% end %>
 
-  <% if !@existing_pledges.empty? %>
+  <% if !@existing_songs.empty? %>
 
     <h2>You had already pledged for the following songs:</h2>
-    <table>
-    <% @existing_pledges.each do |p| %>
-      <tr><td><%= p.song.artist %></td><td><%= p.song.title %></td></tr>
-    <% end %>
-    </table>
+    <%= render partial: "shared/song_list", object: @existing_songs, locals: {
+      campaign: @campaign, render_form: false, render_pledge_phase_links: false, render_buy_phase_links: false, render_stats: false
+    } %>
 
   <% end %>
 

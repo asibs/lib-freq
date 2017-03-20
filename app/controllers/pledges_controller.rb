@@ -24,7 +24,12 @@ class PledgesController < ApplicationController
 
     if !pledged_songs.empty?
       logger.debug("Attempting to send email to [" + params[:email] + "]")
-      PledgeMailer.confirm_pledge_mail(params[:email], user.uuid, campaign, pledged_songs).deliver_later
+
+      # TODO: Build this in a better way
+      confirm_url = "#{Rails.application.secrets.host}/campaigns/#{campaign.id.to_s}/pledges/#{user.uuid}"
+
+      # TODO: Setup a proper ActiveJob
+      PledgeMailer.confirm_pledge_mail(params[:email], confirm_url, campaign, pledged_songs).deliver_later
     end
 
     logger.debug("Success! Redirecting to [" + campaign_url(campaign) + "]")
@@ -36,13 +41,16 @@ class PledgesController < ApplicationController
   def show
     @campaign = Campaign.find_by_id(params[:id])
 
-    @confirmed_pledges = []
-    @unconfirmed_pledges = []
+    confirmed_pledges = []
+    unconfirmed_pledges = []
 
     if @campaign
       @user = User.find_by_uuid(params[:uuid])
 
-      get_pledges!(@user, @confirmed_pledges, @unconfirmed_pledges)
+      get_pledges!(@user, confirmed_pledges, unconfirmed_pledges)
+
+      @confirmed_songs = get_songs(confirmed_pledges)
+      @unconfirmed_songs = get_songs(unconfirmed_pledges)
     end
   end
 
@@ -51,18 +59,21 @@ class PledgesController < ApplicationController
     @campaign = Campaign.find_by_id(params[:id])
     return unless validate_campaign(@campaign)
 
-    @existing_pledges = []
-    @new_pledges = []
+    existing_pledges = []
+    new_pledges = []
 
     if @campaign
       @user = User.find_by_uuid(params[:uuid])
       return unless validate_user(@user)
 
-      get_pledges!(@user, @existing_pledges, @new_pledges)
+      get_pledges!(@user, existing_pledges, new_pledges)
 
-      @new_pledges.each do |pledge|
+      new_pledges.each do |pledge|
         pledge.confirm_and_update_song_counts
       end
+
+      @new_songs = get_songs(new_pledges)
+      @existing_songs = get_songs(existing_pledges)
     end
   end
 
@@ -120,5 +131,10 @@ class PledgesController < ApplicationController
           unconfirmed.push(pledge)
         end
       end
+    end
+
+
+    def get_songs(pledges)
+      pledges.map { |p| p.song }
     end
 end

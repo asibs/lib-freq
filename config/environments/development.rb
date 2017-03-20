@@ -4,6 +4,24 @@ Rails.application.configure do
   # Turn on delivery of emails
   config.action_mailer.perform_deliveries = true
 
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.perform_caching = false
+
+  config.action_mailer.default_url_options = { host: Rails.application.secrets.host }
+
+  # Configure action mailer smtp settings
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: "smtp.gmail.com",
+    port: 587,
+    domain: "example.com",
+    authentication: "plain",
+    enable_starttls_auto: true,
+    user_name: Rails.application.secrets.smtp_username,
+    password: Rails.application.secrets.smtp_password
+  }
+
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
@@ -28,11 +46,6 @@ Rails.application.configure do
 
     config.cache_store = :null_store
   end
-
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
-
-  config.action_mailer.perform_caching = false
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

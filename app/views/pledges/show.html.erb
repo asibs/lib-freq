@@ -1,4 +1,4 @@
-<% if !@campaign || !@user || (@unconfirmed_pledges.empty? && @confirmed_pledges.empty?) %>
+<% if !@campaign || !@user || (@unconfirmed_songs.empty? && @confirmed_songs.empty?) %>
   <h1>Oops, something went wrong...</h1>
 <% else %>
   <h1><%= "Pledges for #{@campaign.name}" %></h1>
@@ -9,29 +9,25 @@
     <h2>This campaign has ended.</h2>
   <% else %>
 
-    <% if !@unconfirmed_pledges.empty? %>
+    <% if !@unconfirmed_songs.empty? %>
 
       <h2>Confirm the following pledges?</h2>
       <%= form_tag("/campaigns/#{@campaign.id.to_s}/pledges/#{@user.uuid}", method: :put) do %>
-        <table>
-        <% @unconfirmed_pledges.each do |p| %>
-          <tr><td><%= p.song.artist %></td><td><%= p.song.title %></td></tr>
-        <% end %>
-        </table>
+        <%= render partial: "shared/song_list", object: @unconfirmed_songs, locals: {
+          campaign: @campaign, render_form: false, render_pledge_phase_links: false, render_buy_phase_links: false, render_stats: false
+        } %>
 
         <%= submit_tag("Confirm all Pledges") %>
       <% end %>
 
     <% end %>
 
-    <% if !@confirmed_pledges.empty? %>
+    <% if !@confirmed_songs.empty? %>
 
       <h2>You have already pledged for the following songs:</h2>
-      <table>
-      <% @confirmed_pledges.each do |p| %>
-        <tr><td><%= p.song.artist %></td><td><%= p.song.title %></td></tr>
-      <% end %>
-      </table>
+      <%= render partial: "shared/song_list", object: @confirmed_songs, locals: {
+        campaign: @campaign, render_form: false, render_pledge_phase_links: false, render_buy_phase_links: false, render_stats: false
+      } %>
 
     <% end %>
 

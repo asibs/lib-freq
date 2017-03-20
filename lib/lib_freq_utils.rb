@@ -18,4 +18,14 @@ module LibFreqUtils
     #TODO: proper decryption
     crypted_email
   end
+
+  def self.asset_exists?(path)
+    # Different checks for prod vs dev
+    if Rails.configuration.assets.compile
+      Rails.application.precompiled_assets.include? path
+    else
+      Rails.application.assets_manifest.assets[path].present?
+    end
+  end
+
 end
