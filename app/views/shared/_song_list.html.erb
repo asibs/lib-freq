@@ -8,17 +8,20 @@
 
 <% song_list.sort! { |a,b| b.song_stat.pledge_count <=> a.song_stat.pledge_count } %>
 
-<table>
+<% pledge_count_target = !song_list[0] ? 10 : LibFreqUtils.significant_round(song_list[0].song_stat.pledge_count) %>
+
+<table class="table table-striped table-bordered table-hover">
   <tr>
-    <% if render_form %><th>Pledge?</th><% end %>
-    <th>Artist</th>
-    <th>Song</th>
+    <% if render_form %><th class="col-xs-2 col-sm-1">Pledge?</th><% end %>
+    <th class="col-xs-3">Artist</th>
+    <th class="col-xs-3">Song</th>
     <% if render_pledge_phase_links %><th colspan="2">Listen</th><% end %>
     <% if render_buy_phase_links %><th colspan="2">Buy</th><% end %>
     <% if render_stats %><th>Pledge Count</th><% end %>
   </tr>
 
   <% song_list.each do |song| %>
+
   <tr>
     <% if render_form %><td><%= check_box_tag "song_ids[]", song.id %></td><% end %>
     <td><%= song.artist %></td>
@@ -32,7 +35,14 @@
       <td><%= render partial: "shared/song_link", object: song.find_link("amazon") %></td>
     <% end %>
     <% if render_stats %>
-      <td><%= song.song_stat.pledge_count %></td>
+      <td>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="<%= song.song_stat.pledge_count %>"
+               aria-valuemin="0" aria-valuemax="<%= pledge_count_target %>" style="min-width: 2em;">
+            <%= song.song_stat.pledge_count %>
+          </div>
+        </div>
+      </td>
     <% end %>
   <% end %><%# End foreach %>
 
