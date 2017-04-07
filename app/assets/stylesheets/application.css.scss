@@ -16,3 +16,30 @@
 
  @import "bootstrap-sprockets";
  @import "bootstrap";
+
+
+table.song-list > tbody > tr > td,
+table.song-list > tbody > tr > th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.song-list-checkbox {
+  width: 75px;
+}
+
+.song-list-spotify,
+.song-list-youtube,
+.song-list-itunes,
+.song-list-amazon {
+  min-width: 70px;
+  width: 70px;
+}
+
+.song-list-stats {
+  width: auto;
+}
+
+.song-list-stats > div.progress {
+  margin-bottom: 0;
+}

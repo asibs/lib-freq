@@ -3,7 +3,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
     create_table :users do |t|
       t.string :uuid
       t.string :hashed_email
-      t.text :crypted_email, limit: 1024
+      t.string :encrypted_email
+      t.string :encrypted_email_iv
 
       t.timestamps
     end

@@ -10,41 +10,52 @@
 
 <% pledge_count_target = !song_list[0] ? 10 : LibFreqUtils.significant_round(song_list[0].song_stat.pledge_count) %>
 
-<table class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover song-list">
   <tr>
-    <% if render_form %><th class="col-xs-2 col-sm-1">Pledge?</th><% end %>
-    <th class="col-xs-3">Artist</th>
-    <th class="col-xs-3">Song</th>
+    <% if render_form %><th>Pledge?</th><% end %>
+    <th class="col-xs-4  col-sm-3  col-lg-2">Artist</th>
+    <th class="col-xs-4  col-sm-3  col-lg-2">Song</th>
     <% if render_pledge_phase_links %><th colspan="2">Listen</th><% end %>
     <% if render_buy_phase_links %><th colspan="2">Buy</th><% end %>
     <% if render_stats %><th>Pledge Count</th><% end %>
   </tr>
 
   <% song_list.each do |song| %>
-
   <tr>
-    <% if render_form %><td><%= check_box_tag "song_ids[]", song.id %></td><% end %>
-    <td><%= song.artist %></td>
-    <td><%= song.title %></td>
+
+    <% if render_form %>
+      <td class="song-list-checkbox"><%= check_box_tag "song_ids[]", song.id %></td>
+    <% end %>
+
+    <td class="song-list-artist"><%= song.artist %></td>
+    <td class="song-list-title"><%= song.title %></td>
+
     <% if render_pledge_phase_links %>
-      <td><%= render partial: "shared/song_link", object: song.find_link("spotify") %></td>
-      <td><%= render partial: "shared/song_link", object: song.find_link("youtube") %></td>
+      <td class="song-list-spotify"><%= render partial: "shared/song_link", object: song.find_link("spotify") %></td>
+      <td class="song-list-youtube"><%= render partial: "shared/song_link", object: song.find_link("youtube") %></td>
     <% end %>
+
     <% if render_buy_phase_links %>
-      <td><%= render partial: "shared/song_link", object: song.find_link("itunes") %></td>
-      <td><%= render partial: "shared/song_link", object: song.find_link("amazon") %></td>
+      <td class="song-list-itunes"><%= render partial: "shared/song_link", object: song.find_link("itunes") %></td>
+      <td class="song-list-amazon"><%= render partial: "shared/song_link", object: song.find_link("amazon") %></td>
     <% end %>
+
     <% if render_stats %>
-      <td>
-        <div class="progress">
+      <td class="song-list-stats">
+        <div class="progress hidden-xs">
           <div class="progress-bar" role="progressbar" aria-valuenow="<%= song.song_stat.pledge_count %>"
-               aria-valuemin="0" aria-valuemax="<%= pledge_count_target %>" style="min-width: 2em;">
+               aria-valuemin="0" aria-valuemax="<%= pledge_count_target %>"
+               style="min-width: 2em; width: <%= song.song_stat.pledge_count.to_f / pledge_count_target * 100 %>%">
             <%= song.song_stat.pledge_count %>
           </div>
         </div>
+        <div class="visible-xs">
+          <%= song.song_stat.pledge_count %>
+        </div>
       </td>
     <% end %>
-  <% end %><%# End foreach %>
 
   </tr>
+  <% end %><%# End foreach %>
+
 </table>

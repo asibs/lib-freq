@@ -1,6 +1,8 @@
 require 'securerandom'
 
 class User < ApplicationRecord
+  attr_encrypted :email, key: LibFreqUtils.get_encryption_key
+
   has_many :song_pledge
   has_many :song_buy
 
@@ -11,7 +13,7 @@ class User < ApplicationRecord
     begin
       user = User.find_or_create_by(hashed_email: hashed_email) do |u|
         u.uuid = SecureRandom.uuid
-        u.crypted_email = LibFreqUtils.encrypt_email(email)
+        u.email = email
       end
     rescue ActiveRecord::RecordNotUnique
       # Race condition with multiple requests could cause the create to fail

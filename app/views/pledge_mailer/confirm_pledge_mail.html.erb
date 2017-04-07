@@ -7,7 +7,7 @@
     <h1><%= @campaign.name %> - Confirm your Song Pledges</h1>
 
     <p>Follow this link to confirm your pledged songs:<br />
-    <%= @confirmation_url %>
+    <%= link_to @confirmation_url, @confirmation_url %>
     </p>
 
     <table>

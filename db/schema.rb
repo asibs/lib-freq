@@ -90,9 +90,10 @@ ActiveRecord::Schema.define(version: 20170218182752) do
   create_table "users", force: :cascade do |t|
     t.string   "uuid"
     t.string   "hashed_email"
-    t.text     "crypted_email"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.string   "encrypted_email"
+    t.string   "encrypted_email_iv"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.index ["hashed_email"], name: "index_users_on_hashed_email", unique: true, using: :btree
     t.index ["uuid"], name: "index_users_on_uuid", unique: true, using: :btree
   end

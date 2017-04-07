@@ -1,22 +1,20 @@
 require 'digest/sha2'
 
 module LibFreqUtils
+
   def self.validate_email?(email)
     email =~ /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   end
 
   def self.hash_email(email)
-    Digest::SHA512.base64digest(email)
+    # On the offchance someone has reverse-lookup hash tables of emails, repeat the email before hashing
+    Digest::SHA512.base64digest(email + email)
   end
 
-  def self.encrypt_email(plaintext_email)
-    #TODO: proper encryption
-    plaintext_email
-  end
-
-  def self.decrypt_email(crypted_email)
-    #TODO: proper decryption
-    crypted_email
+  def self.get_encryption_key
+    # Two halves of the base64 encoded key are stored separately,
+    # one half in the codebase (NOT CHECKED IN!), the other in the environment
+    Base64.decode64(Rails.application.secrets.code_encryption_key + Rails.application.secrets.env_encryption_key)
   end
 
   def self.asset_exists?(path)
@@ -34,7 +32,7 @@ module LibFreqUtils
     # 1 - Take the log10 of n, floor it, giving how many times n is divisible by 10 (ensure it is always >= 1)
     # 2 - Add 1 to n (ensure we always go above n), and round it up using negative the no. of tens as the no. of significant figures
 
-    tens = [Math.log10(n).floor, 1].max
+    tens = [Math.log10(n), 1].max.floor
     (n+1).ceil(-tens)
   end
 

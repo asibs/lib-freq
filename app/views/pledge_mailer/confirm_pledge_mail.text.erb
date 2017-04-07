@@ -1,7 +1,7 @@
 *** <%= @campaign.name %> - Confirm your Song Pledges ***
 
 Follow this url below to confirm your pledged songs:
-<%= @confirmation_url %>
+<%= link_to @confirmation_url, @confirmation_url %>
 
 <% @songs.each do |song| %>
 <%= song.artist %> - <%= song.title %>
