@@ -7,10 +7,12 @@
     render_stats: render_stats
   } %>
 
-  <div id="form-user-info">
-    <%= label_tag(:email, "Email Address:") %>
-    <%= text_field_tag(:email) %>
-    <%= submit_tag("Pledge To Buy!") %>
+  <div id="form-inputs">
+    <div class="form-inline">
+      <%= label_tag(:email, "Email Address:") %>
+      <%= text_field_tag(:email, nil, size: 30, placeholder: "Email", class: "form-control") %>
+      <%= submit_tag("Pledge To Buy!", class: "btn btn-primary") %>
+    </div>
   </div>
 
 <% end %><%# End form %>

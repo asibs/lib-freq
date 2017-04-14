@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get  'campaigns/:id/pledges/:uuid', to: 'pledges#show'
   put  'campaigns/:id/pledges/:uuid', to: 'pledges#confirm'
 
-  get 'static_pages/about'
-  get 'static_pages/faq'
+  get 'about', to: 'static_pages#about'
+  get 'faq',   to: 'static_pages#faq'
 
 end

@@ -35,7 +35,7 @@ class PledgesController < ApplicationController
     end
 
     logger.debug("Success! Redirecting to [" + campaign_url(campaign) + "]")
-    flash[:success] = "Pledge successful, you will receive an email shortly. Your pledge will not be counted until you click the confirmation link in the email."
+    flash[:success] = "<strong>Pledge successful!</strong> You will receive an email shortly.<br /><strong><em>Your pledge will not be counted until you click the confirmation link in the email.</em></strong>"
     redirect_to campaign_url(campaign)
   end
 
@@ -84,7 +84,7 @@ class PledgesController < ApplicationController
     def validate_campaign(campaign)
       if !campaign
         logger.debug("Didn't find campaign [" + params[:id] + "], redirecting back")
-        flash[:error] = "Oops, something went wrong!"
+        flash[:danger] = "<strong>Oops, something went wrong!</strong>"
         redirect_to :back
         return false
       end
@@ -95,7 +95,7 @@ class PledgesController < ApplicationController
     def validate_user(user)
       if !user
         logger.debug("Didn't find user [" + params[:uuid] + "], redirecting back")
-        flash[:error] = "Oops, something went wrong!"
+        flash[:danger] = "<strong>Oops, something went wrong!</strong>"
         redirect_to :back
         return false
       end
@@ -108,14 +108,14 @@ class PledgesController < ApplicationController
 
       if !LibFreqUtils.validate_email?(params[:email])
         logger.debug("Invalid email address [" + params[:email] + "], redirecting to [" + campaign_url(campaign) + "]")
-        flash[:error] = "Sorry, that email address doesn't look right to us"
+        flash[:danger] = "<strong>Sorry, that email address doesn't look right to us</strong>"
         redirect_to campaign_url(campaign)
         return false
       end
 
       if !params["song_ids"] || params["song_ids"].empty?
         logger.debug("No songs selected, redirecting to [" + campaign_url(campaign) + "]")
-        flash[:error] = "Sorry, you don't appear to have chosen any songs"
+        flash[:danger] = "<strong>Sorry, you don't appear to have chosen any songs</strong>"
         redirect_to campaign_url(campaign)
         return false
       end

@@ -11,20 +11,22 @@
 
     <% if !@unconfirmed_songs.empty? %>
 
-      <h2>Confirm the following pledges?</h2>
+      <h2>Confirm the following pledges to buy?</h2>
       <%= form_tag("/campaigns/#{@campaign.id.to_s}/pledges/#{@user.uuid}", method: :put) do %>
         <%= render partial: "shared/song_list", object: @unconfirmed_songs, locals: {
           campaign: @campaign, render_form: false, render_pledge_phase_links: false, render_buy_phase_links: false, render_stats: false
         } %>
 
-        <%= submit_tag("Confirm all Pledges") %>
+        <div id="form-inputs">
+          <%= submit_tag("Confirm all Pledges", class: "btn btn-primary") %>
+        </div>
       <% end %>
 
     <% end %>
 
     <% if !@confirmed_songs.empty? %>
 
-      <h2>You have already pledged for the following songs:</h2>
+      <h2>You have already pledged to buy the following songs:</h2>
       <%= render partial: "shared/song_list", object: @confirmed_songs, locals: {
         campaign: @campaign, render_form: false, render_pledge_phase_links: false, render_buy_phase_links: false, render_stats: false
       } %>
@@ -35,4 +37,4 @@
 
 <% end %>
 
-<p>Return to the <%= link_to @campaign.name, @campaign %> page</p>
+<p class="pull-right">Return to the <%= link_to @campaign.name, @campaign %> page</p>
