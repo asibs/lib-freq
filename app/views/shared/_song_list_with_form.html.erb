@@ -1,14 +1,16 @@
 <%= form_tag("/campaigns/#{campaign.id.to_s}/pledges") do %>
 
-<%# Pass through arguments to the song_list partial %>
-<%= render partial: "shared/song_list", object: song_list_with_form, locals: {
-  campaign: campaign, render_form: true,
-  render_pledge_phase_links: render_pledge_phase_links, render_buy_phase_links: render_buy_phase_links,
-  render_stats: render_stats
-} %>
+  <%# Pass through arguments to the song_list partial %>
+  <%= render partial: "shared/song_list", object: song_list_with_form, locals: {
+    campaign: campaign, render_form: true,
+    render_pledge_phase_links: render_pledge_phase_links, render_buy_phase_links: render_buy_phase_links,
+    render_stats: render_stats
+  } %>
 
-<%= label_tag(:email, "Email Address:") %>
-<%= text_field_tag(:email) %>
-<%= submit_tag("Pledge") %>
+  <div id="form-user-info">
+    <%= label_tag(:email, "Email Address:") %>
+    <%= text_field_tag(:email) %>
+    <%= submit_tag("Pledge To Buy!") %>
+  </div>
 
 <% end %><%# End form %>

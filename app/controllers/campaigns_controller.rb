@@ -1,7 +1,10 @@
 class CampaignsController < ApplicationController
 
+  before_action { @page = :home }
+
   def show
-    @campaign = Campaign.find_by_id(params[:id])
+    campaign_id = params[:id] || 1
+    @campaign = Campaign.find_by_id(campaign_id)
   end
 
 end

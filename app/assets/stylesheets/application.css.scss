@@ -14,8 +14,20 @@
  *= require_self
  */
 
- @import "bootstrap-sprockets";
- @import "bootstrap";
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+
+#content-container {
+  max-width: 1500px;
+  margin: auto;
+}
+
+#footer {
+  max-width: 1200px;
+  margin: 50px auto;
+  text-align: center;
+}
 
 
 table.song-list > tbody > tr > td,
@@ -42,4 +54,8 @@ table.song-list > tbody > tr > th {
 
 .song-list-stats > div.progress {
   margin-bottom: 0;
+}
+
+#form-user-info {
+  margin-left: 15px;
 }

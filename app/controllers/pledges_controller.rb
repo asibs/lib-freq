@@ -2,6 +2,8 @@ require 'securerandom'
 
 class PledgesController < ApplicationController
 
+  before_action { @page = nil }
+
   def create
     campaign = Campaign.find_by_id(params[:id])
     return unless validate_create_params(campaign, params)
