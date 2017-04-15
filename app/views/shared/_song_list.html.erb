@@ -24,7 +24,7 @@
   <tr>
 
     <% if render_form %>
-      <td class="song-list-checkbox"><%= check_box_tag "song_ids[]", song.id %></td>
+      <td class="song-list-checkbox select-checkbox-onclick"><%= check_box_tag "song_ids[]", song.id %></td>
     <% end %>
 
     <td class="song-list-artist"><%= song.artist %></td>
